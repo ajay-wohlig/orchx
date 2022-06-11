@@ -3,7 +3,8 @@ const User = require("../mongooseModels/User");
 
 const auth = async (req, res, next) => {
   try {
-    var unSecuredPaths = ['/user/login', '/user/signup', '/product/allProducts']
+    console.log(req.path)
+    var unSecuredPaths = ['/login', '/signup']
     if (unSecuredPaths.includes(req.path)) {
         return next()
     }
@@ -14,6 +15,7 @@ const auth = async (req, res, next) => {
           { _id: ObjectId(decodedData._id), token: req.headers.accesstoken },
           { _id: 1, email: 1, accessLevel: 1 }
         );
+        console.log(user)
         if (user && user._id) {
           req.user = user;
           next();
